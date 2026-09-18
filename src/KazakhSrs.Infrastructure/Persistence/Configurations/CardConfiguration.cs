@@ -40,9 +40,12 @@ public class CardConfiguration : IEntityTypeConfiguration<Card>
 
         builder.Navigation(c => c.State).IsRequired();
 
-        // NB: composite index on the owned State.DueDate — double-check this resolves after
-        // restore; owned-type index paths are the one thing here I couldn't compile-verify.
-        builder.HasIndex(nameof(Card.UserId), "State.DueDate").HasDatabaseName("idx_cards_due");
+        // TODO: idx_cards_due — composite index on (UserId, State.DueDate), the hot-path query
+        // for "due cards today". Dropped for now: two fluent HasIndex attempts (string-based
+        // dotted path, and a lambda reaching into the owned State navigation) both failed to
+        // build against EF Core 8 — see chat history for the exact errors. Add it back via
+        // IMutableEntityType.AddIndex(...) on builder.Metadata, or a follow-up migration with
+        // migrationBuilder.Sql("CREATE INDEX ..."), with a compiler on hand to verify.
         builder.HasIndex(c => c.TopicId).HasDatabaseName("idx_cards_topic");
 
         builder.HasOne<User>().WithMany().HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
