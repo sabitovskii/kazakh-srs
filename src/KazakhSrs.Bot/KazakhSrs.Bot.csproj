@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Version picked from memory, not verified against NuGet here (no network to nuget.org
+         in this bridge VM) — if restore fails on this version, tell me the exact error and
+         we'll adjust, same as with the EF Core packages earlier. -->
+    <PackageReference Include="Telegram.Bot" Version="22.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KazakhSrs.Application\KazakhSrs.Application.csproj" />
+    <ProjectReference Include="..\KazakhSrs.Infrastructure\KazakhSrs.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
